@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090b18" />
+  <meta name="description" content="Nebula Drop — penyimpanan file lokal yang cepat, privat, dan modern." />
+  <title>Nebula Drop — Local File Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="aurora aurora-one"></div>
+  <div class="aurora aurora-two"></div>
+  <main class="shell">
+    <nav class="nav">
+      <a class="brand" href="./" aria-label="Nebula Drop home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>Nebula<span class="brand-muted">Drop</span></span>
+      </a>
+      <div class="privacy-pill"><span class="pulse"></span> 100% lokal & privat</div>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="spark">✦</span> YOUR PERSONAL FILE SPACE</div>
+      <h1>Simpan file.<br /><em>Secara sederhana.</em></h1>
+      <p class="hero-copy">Drop file kamu ke ruang lokal yang cepat, rapi, dan tetap privat.<br class="desktop-only" /> Tidak ada upload ke server—semua tersimpan di browser ini.</p>
+    </section>
+
+    <section class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Pilih atau letakkan file di sini">
+      <input id="fileInput" type="file" multiple hidden />
+      <div class="drop-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" /></svg></div>
+      <h2>Taruh file di sini</h2>
+      <p>atau <button class="browse-button" id="browseButton" type="button">pilih dari perangkat</button></p>
+      <span class="drop-hint">Mendukung semua tipe file · Maks. 500 MB per file</span>
+    </section>
+
+    <section class="toolbar" aria-label="Kontrol file">
+      <div class="section-title"><span class="title-dot"></span><span>FILE KAMU</span><strong id="fileCount">0</strong></div>
+      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg><input id="searchInput" type="search" placeholder="Cari file..." aria-label="Cari file" /></label>
+    </section>
+
+    <section class="file-list" id="fileList" aria-live="polite"></section>
+    <div class="empty-state" id="emptyState"><div class="empty-orbit">✦</div><h3>Ruang masih kosong</h3><p>File yang kamu tambahkan akan muncul di sini.</p></div>
+
+    <footer><span>NEBULA DROP <b>·</b> LOCAL STORAGE</span><span id="storageText">0 B digunakan</span></footer>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
