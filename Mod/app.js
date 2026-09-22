@@ -100,12 +100,43 @@ function smartDescription() {
   return `Posting ini berisi ${parts}. File ini dibagikan untuk kebutuhan publik, referensi, dan kolaborasi cepat.`;
 }
 
-$('#generateButton').addEventListener('click', () => {
-  const content = $('#content');
-  const value = smartDescription();
-  content.value = content.value ? `${content.value}\n\n${value}` : value;
-  $('#saveStatus').textContent = 'Deskripsi dibuat ✦';
-  toast('Deskripsi otomatis dibuat');
+async function generateAiDescription(title, content, fileTypes) {
+  const response = await fetch(
+    'https://cpseqxlarjjfsvnqxxzk.supabase.co/functions/v1/generate-description',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ title, content, fileTypes })
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || 'AI generation failed');
+  }
+
+  return data.description;
+}
+
+$('#generateButton').addEventListener('click', async () => {
+  const title = $('#title').value.trim();
+  const content = $('#content').value.trim();
+  const fileTypes = files.map((file) => fileKindLabel(file));
+
+  try {
+    const description = await generateAiDescription(title, content, fileTypes);
+    $('#content').value = $('#content').value
+      ? `${$('#content').value}\n\n${description}`
+      : description;
+
+    $('#saveStatus').textContent = 'Deskripsi AI dibuat ✦';
+    toast('Deskripsi AI berhasil dibuat');
+  } catch (error) {
+    toast(error.message || 'Gagal membuat deskripsi AI');
+  }
 });
 
 input.addEventListener('change', (event) => {
