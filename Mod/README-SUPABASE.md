@@ -1,27 +1,39 @@
 # Mod + Supabase
 
-## Konfigurasi yang sudah dipasang
+Mod adalah halaman statis GitHub Pages yang memakai Supabase untuk posting publik dan lampiran.
 
-`Mod/supabase-config.js` sudah dikonfigurasi menggunakan:
+## Setup satu kali
 
-- Project URL: `https://cpseqxlarjjfsvnqxxzk.supabase.co`
-- Publishable key: key publik yang aman digunakan di browser
-
-**Jangan pernah menambahkan `SUPABASE_SECRET_KEY` ke file frontend, GitHub Pages, atau repository publik.** Secret key hanya boleh digunakan pada backend/server atau Edge Function.
-
-## Setup database dan storage
-
-1. Buka project Supabase.
+1. Buka project Supabase: `https://cpseqxlarjjfsvnqxxzk.supabase.co`.
 2. Buka **SQL Editor**.
-3. Jalankan isi `supabase-schema.sql`.
-4. Pastikan bucket Storage `mod-files` sudah dibuat sebagai bucket publik.
+3. Jalankan seluruh isi `supabase-schema.sql`. Script ini aman dijalankan ulang.
+4. Pastikan bucket `mod-files` berstatus **Public**.
 5. Buka `https://kangbrave.github.io/Mod/`.
 
-Aplikasi menggunakan Supabase JS di browser untuk membaca posting, mengunggah lampiran, menampilkan preview media, dan menyediakan tombol download publik.
+## Fitur publik
 
-## Catatan backend
+- Semua pengunjung dapat membaca posting dari tabel `posts`.
+- Semua pengunjung dapat membuka detail melalui tombol **Selengkapnya**.
+- Lampiran disimpan di bucket `mod-files`.
+- Gambar dan video mendapat preview.
+- Setiap lampiran memiliki link download.
+- Form mendukung maksimum 8 file, masing-masing maksimum 100 MB.
 
-Repository ini adalah GitHub Pages statis, jadi tidak memiliki runtime Node/backend. Karena itu `@supabase/server` dan `SUPABASE_SECRET_KEY` **tidak** boleh dipasang di halaman frontend. Jika nanti diperlukan API server untuk autentikasi, validasi upload, atau operasi administratif, buat backend/Edge Function terpisah dan simpan variabel berikut hanya di environment backend:
+## Konfigurasi browser
+
+`supabase-config.js` hanya berisi Project URL dan publishable key. Keduanya memang dapat digunakan pada frontend. Jangan menambahkan secret key ke file ini.
+
+## Keamanan dan batasan
+
+Policy insert publik berarti siapa pun dapat membuat posting. Untuk produksi yang lebih aman, aktifkan Supabase Auth dan pindahkan upload/publish ke Edge Function atau backend yang melakukan validasi ukuran, tipe file, rate limit, dan moderasi.
+
+GitHub Pages tidak menjalankan Node.js. Karena itu `@supabase/server` hanya boleh dipasang pada project backend/Edge Function:
+
+```bash
+npm install @supabase/server
+```
+
+Variabel rahasia harus disimpan di environment backend, bukan repository:
 
 ```env
 SUPABASE_URL=https://cpseqxlarjjfsvnqxxzk.supabase.co
@@ -30,10 +42,4 @@ SUPABASE_SECRET_KEY=...
 SUPABASE_JWKS_URL=https://cpseqxlarjjfsvnqxxzk.supabase.co/auth/v1/.well-known/jwks.json
 ```
 
-Instalasi server dilakukan hanya di project backend:
-
-```bash
-npm install @supabase/server
-```
-
-Jangan commit file `.env` atau secret key ke repository.
+Jangan commit `.env` atau `SUPABASE_SECRET_KEY`.
