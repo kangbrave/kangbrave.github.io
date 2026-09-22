@@ -1,29 +1,131 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Mod — ruang berbagi file dan cerita dengan bantuan AI.">
   <title>Mod — Share something meaningful</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
   <header class="topbar">
-    <a class="brand" href="#top"><span class="brand-mark">✦</span><span>mod<span class="accent">.</span></span></a>
-    <nav class="main-nav" aria-label="Menu utama"><a href="#top">Beranda</a><a href="#explore">Jelajah</a><a href="#create">Buat posting</a><a href="#about">Tentang</a></nav>
-    <button class="icon-button" id="themeToggle" type="button" aria-label="Ganti tema">◐</button>
+    <a class="brand" href="#top" aria-label="Mod home"><span class="brand-mark">✦</span><span>mod<span class="accent">.</span></span></a>
+    <nav class="main-nav" aria-label="Navigasi utama">
+      <a href="#top">Beranda</a>
+      <a href="#explore">Jelajah</a>
+      <a href="#create">Buat posting</a>
+      <a href="#about">Tentang</a>
+    </nav>
+    <button class="icon-button" id="themeToggle" type="button" aria-label="Ganti tema warna">◐</button>
   </header>
+
   <main id="top">
-    <section class="hero"><div class="eyebrow"><span class="pulse"></span> A calmer way to share</div><h1>Ideas deserve<br><em>a beautiful place.</em></h1><p class="hero-copy">Bagikan cerita, media, aplikasi, dan file pentingmu. Sekarang posting tersedia untuk semua pengunjung.</p><a class="primary-button" href="#create">Mulai membuat <span>↗</span></a><div class="hero-meta"><span>✦ AI-assisted writing</span><span>◌ Cloud storage</span><span>⌁ Public sharing</span></div></section>
-    <section class="workspace" id="create"><div class="section-heading"><div><span class="eyebrow">01 / Compose</span><h2>Buat posting baru</h2></div><span class="save-note" id="saveStatus">Cloud ready</span></div>
-      <form id="postForm" class="composer"><div class="field-row"><label>Judul posting<input id="title" required maxlength="100" placeholder="Apa yang ingin kamu bagikan?"></label><label>Nama kamu<input id="author" maxlength="40" placeholder="Anonymous" value="Anonymous"></label></div><label class="content-label">Cerita atau catatan<textarea id="content" rows="5" maxlength="5000" placeholder="Tulis sesuatu... AI akan membantu membuat deskripsi file yang lebih jelas."></textarea></label><div class="upload-zone" id="dropZone" tabindex="0"><input id="fileInput" type="file" multiple accept="image/*,video/*,audio/*,.apk,.pdf,.zip,.rar,.7z,.txt,.doc,.docx,.xls,.xlsx,.ppt,.pptx"><div class="upload-icon">↑</div><strong>Tarik file ke sini atau <u>pilih dari perangkat</u></strong><small>File tersimpan aman di Supabase Storage · maksimal 100 MB per file</small></div><div class="file-list" id="fileList"></div><div class="ai-bar"><div class="ai-symbol">✦</div><div><strong>AI Description Assistant</strong><span id="aiHint">Tambahkan file untuk mendapatkan saran deskripsi otomatis.</span></div><button type="button" class="secondary-button" id="generateButton">Buat dengan AI ✦</button></div><div class="form-actions"><button class="primary-button" type="submit" id="publishButton">Publish posting <span>↗</span></button><button class="ghost-button" type="reset">Reset</button></div></form>
+    <section class="hero">
+      <div class="eyebrow"><span class="pulse"></span> A calmer way to share</div>
+      <h1>Ideas deserve<br><em>a beautiful place.</em></h1>
+      <p class="hero-copy">Bagikan cerita, media, aplikasi, dan file pentingmu. Mod kini dibuat agar semua pengunjung bisa melihat, membuka, dan mengunduh konten publik.</p>
+      <a class="primary-button" href="#create">Mulai membuat <span>↗</span></a>
+      <div class="hero-meta">
+        <span>✦ AI-assisted writing</span>
+        <span>◌ Supabase public storage</span>
+        <span>⌁ Public sharing</span>
+      </div>
     </section>
-    <section class="feed" id="explore"><div class="section-heading"><div><span class="eyebrow">02 / Community</span><h2>Posting terbaru</h2></div><label class="search"><span>⌕</span><input id="searchInput" placeholder="Cari posting..." aria-label="Cari posting"></label></div><div id="postGrid" class="post-grid"></div><div id="emptyState" class="empty-state">Belum ada posting. Jadilah yang pertama berbagi sesuatu yang berarti.</div></section>
-    <section class="about" id="about"><span class="eyebrow">03 / About Mod</span><h2>Simple tools for<br><em>good ideas.</em></h2><p>Posting dan lampiran disimpan di Supabase sehingga dapat dilihat dan diunduh oleh semua pengunjung.</p></section>
+
+    <section class="workspace" id="create">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">01 / Compose</span>
+          <h2>Buat posting baru</h2>
+        </div>
+        <span class="save-note" id="saveStatus">Cloud ready</span>
+      </div>
+
+      <form id="postForm" class="composer">
+        <div class="field-row">
+          <label>Judul posting
+            <input id="title" name="title" required maxlength="100" placeholder="Apa yang ingin kamu bagikan?" autocomplete="off">
+          </label>
+          <label>Nama kamu
+            <input id="author" name="author" maxlength="40" placeholder="Anonymous" value="Anonymous">
+          </label>
+        </div>
+
+        <label class="content-label">Cerita atau catatan
+          <textarea id="content" name="content" rows="5" maxlength="5000" placeholder="Tulis sesuatu... AI akan membantu membuat deskripsi file yang lebih jelas."></textarea>
+        </label>
+
+        <div class="upload-zone" id="dropZone" tabindex="0">
+          <input id="fileInput" type="file" multiple accept="image/*,video/*,audio/*,.apk,.pdf,.zip,.rar,.7z,.txt,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+          <div class="upload-icon">↑</div>
+          <strong>Tarik file ke sini atau <u>pilih dari perangkat</u></strong>
+          <small>File disimpan di Supabase Storage · maksimal 100 MB per file</small>
+        </div>
+
+        <div class="file-list" id="fileList" aria-live="polite"></div>
+
+        <div class="ai-bar">
+          <div class="ai-symbol">✦</div>
+          <div>
+            <strong>AI Description Assistant</strong>
+            <span id="aiHint">Tambahkan file untuk mendapatkan saran deskripsi otomatis.</span>
+          </div>
+          <button type="button" class="secondary-button" id="generateButton">Buat dengan AI ✦</button>
+        </div>
+
+        <div class="form-actions">
+          <button class="primary-button" type="submit" id="publishButton">Publish posting <span>↗</span></button>
+          <button class="ghost-button" type="reset">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="feed" id="explore">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">02 / Community</span>
+          <h2>Posting terbaru</h2>
+        </div>
+        <label class="search">
+          <span>⌕</span>
+          <input id="searchInput" placeholder="Cari posting..." aria-label="Cari posting">
+        </label>
+      </div>
+
+      <div id="postGrid" class="post-grid"></div>
+      <div id="emptyState" class="empty-state">Belum ada posting. Jadilah yang pertama berbagi sesuatu yang berarti.</div>
+    </section>
+
+    <section class="about" id="about">
+      <span class="eyebrow">03 / About Mod</span>
+      <h2>Simple tools for<br><em>good ideas.</em></h2>
+      <p>Posting dan lampiran disimpan di Supabase sehingga dapat diakses publik dan diunduh oleh semua pengunjung.</p>
+    </section>
   </main>
-  <footer><span>© 2026 mod.</span><span>Dibuat dengan rasa ingin tahu <span class="accent">✦</span></span></footer><div class="toast" id="toast" role="status"></div>
-  <div id="detailModal" class="modal hidden" aria-hidden="true"><div class="modal-backdrop" data-close="true"></div><div class="modal-card" role="dialog" aria-modal="true"><button class="modal-close" id="closeModal" type="button">×</button><div id="modalBody"></div></div></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="app.js"></script>
-</body></html>
+
+  <footer>
+    <span>© 2026 mod.</span>
+    <span>Dibuat dengan rasa ingin tahu <span class="accent">✦</span></span>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <div id="detailModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button type="button" class="modal-close" id="closeModal" aria-label="Tutup detail">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
