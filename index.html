@@ -17,23 +17,185 @@
     <div class="noise"></div>
 
     <header class="topbar">
-      <div class="brand-wrap"><div class="brand-mark">B</div><div class="brand-copy"><span class="brand-name">Brave</span><span class="brand-sub">Blog / AI journal</span></div></div>
-      <nav class="main-nav" aria-label="Navigasi utama"><a href="#home">Beranda</a><a href="#posts">Artikel</a><a href="#media">Media</a><a href="#admin">Admin</a></nav>
-      <div class="topbar-actions"><button id="themeToggle" class="theme-button" type="button"><span class="theme-dot"></span> AI Theme</button><button id="openAdminBtn" class="admin-button" type="button">Menu Admin</button></div>
+      <div class="brand-wrap">
+        <div class="brand-mark">B</div>
+        <div class="brand-copy">
+          <span class="brand-name">Brave</span>
+          <span class="brand-sub">Blog / AI journal</span>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Navigasi utama">
+        <a href="#home">Beranda</a>
+        <a href="#posts">Artikel</a>
+        <a href="#media">Media</a>
+        <a href="#admin">Admin</a>
+      </nav>
+
+      <div class="topbar-actions">
+        <button id="themeToggle" class="theme-button" type="button">
+          <span class="theme-dot"></span>
+          AI Theme
+        </button>
+        <button id="openAdminBtn" class="admin-button" type="button">Menu Admin</button>
+      </div>
     </header>
 
     <main class="page-shell">
       <section class="hero" id="home">
-        <div class="hero-copy"><p class="eyebrow">Publik · modern · selalu berevolusi</p><h1>Ideas, stories, and signals from the edge of tomorrow.</h1><p class="lead">Ruang editorial premium untuk berbagi artikel, foto, video, dan file penting dengan pengalaman membaca yang sinematik.</p><div class="hero-actions"><a href="#posts" class="primary-button">Jelajahi artikel ↗</a><button id="openAdminSecondary" class="secondary-button" type="button">Kelola admin</button></div><div class="stats-bar"><div><strong id="postCountStat">0</strong><span>Artikel</span></div><div><strong id="mediaCountStat">0</strong><span>Media publik</span></div><div><strong>24/7</strong><span>Open access</span></div></div></div>
-        <div class="hero-visual" aria-label="Preview premium blog"><div class="card-window"><div class="window-bar"><span></span><span></span><span></span></div><div class="window-content"><div class="mini-feature"></div><div class="mini-grid"><div class="mini-card"></div><div class="mini-card accent"></div><div class="mini-card tall"></div><div class="mini-card"></div></div></div></div></div>
+        <div class="hero-copy">
+          <p class="eyebrow">Publik · modern · selalu berevolusi</p>
+          <h1>Ideas, stories, and signals from the edge of tomorrow.</h1>
+          <p class="lead">
+            Ruang editorial premium untuk berbagi artikel, foto, video, dan file penting dengan pengalaman membaca yang sinematik.
+          </p>
+          <div class="hero-actions">
+            <a href="#posts" class="primary-button">Jelajahi artikel ↗</a>
+            <button id="openAdminSecondary" class="secondary-button" type="button">Kelola admin</button>
+          </div>
+          <div class="stats-bar">
+            <div>
+              <strong id="postCountStat">0</strong>
+              <span>Artikel</span>
+            </div>
+            <div>
+              <strong id="mediaCountStat">0</strong>
+              <span>Media publik</span>
+            </div>
+            <div>
+              <strong>24/7</strong>
+              <span>Open access</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Preview premium blog">
+          <div class="card-window">
+            <div class="window-bar"><span></span><span></span><span></span></div>
+            <div class="window-content">
+              <div class="mini-feature"></div>
+              <div class="mini-grid">
+                <div class="mini-card"></div>
+                <div class="mini-card accent"></div>
+                <div class="mini-card tall"></div>
+                <div class="mini-card"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section class="featured-row" id="featuredRow" aria-label="Highlight artikel"></section>
-      <section class="content-grid" id="posts"><div class="main-panel"><div class="section-head"><div><p class="eyebrow">Latest transmission</p><h2>Artikel terbaru</h2></div><label class="search-box" aria-label="Cari artikel"><span>⌕</span><input id="searchInput" type="search" placeholder="Cari judul, tag, atau penulis" /></label></div><div id="postList" class="post-grid" aria-live="polite"></div></div><aside class="sidebar-panel" id="media"><div class="side-card"><div class="section-head compact"><div><p class="eyebrow">Visual archive</p><h3>Gallery publik</h3></div></div><div id="mediaList" class="media-grid"></div></div></aside></section>
 
-      <section id="admin" class="admin-panel hidden" aria-live="polite"><div class="admin-header"><div><p class="eyebrow">Private console</p><h2>Kelola konten</h2></div><button id="closeAdminBtn" class="close-button" type="button" aria-label="Tutup admin">×</button></div><form id="postForm" class="admin-form"><div class="field-row two-col"><label>Judul artikel<input id="titleInput" name="title" type="text" maxlength="120" placeholder="Judul yang ingin diposting" required /></label><label>Penulis<input id="authorInput" name="author" type="text" maxlength="60" placeholder="Nama penulis" value="Admin" /></label></div><div class="field-row two-col"><label>Kategori<input id="categoryInput" name="category" type="text" maxlength="40" placeholder="Teknologi, Design, Tips" /></label><label>Tag<input id="tagsInput" name="tags" type="text" maxlength="100" placeholder="ai, blog, media" /></label></div><label>Ringkasan<textarea id="excerptInput" name="excerpt" rows="2" maxlength="220" placeholder="Tulis ringkasan singkat artikel"></textarea></label><label>Konten artikel<textarea id="contentInput" name="content" rows="6" maxlength="5000" placeholder="Tulis isi artikel..." required></textarea></label><div class="upload-box"><div class="upload-copy"><strong>Tambahkan media publik</strong><small>Gambar, video, atau audio yang dapat dilihat semua pengunjung.</small></div><label class="upload-button"><input id="mediaInput" type="file" accept="image/*,video/*,audio/*" multiple />Pilih file</label></div><div id="mediaPreview" class="media-preview" aria-live="polite"></div><div class="form-actions"><button type="submit" class="primary-button small">Publikasikan</button><button type="button" id="resetFormBtn" class="secondary-button small ghost">Reset</button></div></form></section>
+      <section class="content-grid" id="posts">
+        <div class="main-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Latest transmission</p>
+              <h2>Artikel terbaru</h2>
+            </div>
+            <label class="search-box" aria-label="Cari artikel">
+              <span>⌕</span>
+              <input id="searchInput" type="search" placeholder="Cari judul, tag, atau penulis" />
+            </label>
+          </div>
+          <div id="postList" class="post-grid" aria-live="polite"></div>
+        </div>
+
+        <aside class="sidebar-panel" id="media">
+          <div class="side-card">
+            <div class="section-head compact">
+              <div>
+                <p class="eyebrow">Visual archive</p>
+                <h3>Gallery publik</h3>
+              </div>
+            </div>
+            <div id="mediaList" class="media-grid"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="admin" class="admin-panel hidden" aria-live="polite">
+        <div class="admin-header">
+          <div>
+            <p class="eyebrow">Private console</p>
+            <h2>Kelola konten</h2>
+          </div>
+          <button id="closeAdminBtn" class="close-button" type="button" aria-label="Tutup admin">×</button>
+        </div>
+
+        <form id="postForm" class="admin-form">
+          <div class="field-row two-col">
+            <label>
+              Judul artikel
+              <input id="titleInput" name="title" type="text" maxlength="120" placeholder="Judul yang ingin diposting" required />
+            </label>
+            <label>
+              Penulis
+              <input id="authorInput" name="author" type="text" maxlength="60" placeholder="Nama penulis" value="Admin" />
+            </label>
+          </div>
+
+          <div class="field-row two-col">
+            <label>
+              Kategori
+              <input id="categoryInput" name="category" type="text" maxlength="40" placeholder="Teknologi, Design, Tips" />
+            </label>
+            <label>
+              Tag
+              <input id="tagsInput" name="tags" type="text" maxlength="100" placeholder="ai, blog, media" />
+            </label>
+          </div>
+
+          <label>
+            Ringkasan
+            <textarea id="excerptInput" name="excerpt" rows="2" maxlength="220" placeholder="Tulis ringkasan singkat artikel"></textarea>
+          </label>
+
+          <label>
+            Konten artikel
+            <textarea id="contentInput" name="content" rows="6" maxlength="5000" placeholder="Tulis isi artikel..." required></textarea>
+          </label>
+
+          <div class="upload-box">
+            <div class="upload-copy">
+              <strong>Tambahkan media publik</strong>
+              <small>Gambar, video, atau audio yang dapat dilihat semua pengunjung.</small>
+            </div>
+            <label class="upload-button">
+              <input id="mediaInput" type="file" accept="image/*,video/*,audio/*" multiple />
+              Pilih file
+            </label>
+          </div>
+
+          <div id="mediaPreview" class="media-preview" aria-live="polite"></div>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-button small">Publikasikan</button>
+            <button type="button" id="resetFormBtn" class="secondary-button small ghost">Reset</button>
+          </div>
+        </form>
+
+        <div class="admin-list-wrap">
+          <div class="admin-list-head">
+            <p class="eyebrow">Daftar artikel</p>
+            <h3>Kelola postingan</h3>
+          </div>
+          <div id="adminPostList" class="admin-post-list"></div>
+        </div>
+      </section>
     </main>
+
+    <div id="articleModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop" data-close="true"></div>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button type="button" id="closeModalBtn" class="close-button modal-close" aria-label="Tutup detail">×</button>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
     <script src="app.js"></script>
   </body>
 </html>
