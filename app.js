@@ -1,493 +1,71 @@
 const STORAGE_KEY = 'brave-blog-posts-v1';
+const fallbackCover = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80';
 
-const defaultPosts = [
-  {
-    id: 'seed-1',
-    title: 'Membangun ritme tulisan yang lebih manusiawi dengan AI',
-    author: 'Kang Brave',
-    category: 'Produktivitas',
-    tags: ['ai', 'writing', 'produk'],
-    excerpt: 'AI bukan untuk mengganti ide, tapi untuk mempercepat proses berpikir agar tulisan terasa lebih tajam dan lebih hidup.',
-    content: 'AI bisa membantu menyusun kerangka, memperjelas pesan, dan mengecek tone agar artikel lebih mudah dipahami. Kuncinya adalah tetap memegang suara manusia sebagai inti cerita.\n\nSaat proses menulis lebih cepat, kita punya ruang untuk berpikir lebih dalam, memilih sudut pandang yang tepat, dan menambahkan rasa yang membuat pembaca betah membaca.',
-    createdAt: '2026-09-12T08:00:00.000Z',
-    cover: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
-    media: [
-      { id: 'm-seed-1', type: 'image/jpeg', url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80', name: 'writing-process.jpg' }
-    ]
-  },
-  {
-    id: 'seed-2',
-    title: 'Desain blog modern yang terasa lebih hidup di setiap layar',
-    author: 'Brave Studio',
-    category: 'Design',
-    tags: ['ui', 'blog', 'design'],
-    excerpt: 'Tampilan blog yang responsif bukan sekadar estetika, tetapi cara menjaga pengalaman membaca tetap nyaman di perangkat apapun.',
-    content: 'Ketika perangkat makin beragam, blog perlu memiliki sistem jenis, ruang, kontras, dan ritme visual yang kuat. Hal ini membuat sebuah artikel terasa lebih nyaman dibaca, tanpa mengorbankan keindahan.\n\nElemen yang kuat seperti grid, warna, ruang kosong, dan animasi halus dapat membuat konten lebih mudah ditangkap oleh pembaca.',
-    createdAt: '2026-09-18T10:30:00.000Z',
-    cover: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
-    media: [
-      { id: 'm-seed-2', type: 'image/jpeg', url: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80', name: 'design-layout.jpg' }
-    ]
-  },
-  {
-    id: 'seed-3',
-    title: 'Kenapa media publik perlu tampil rapi dan gampang diakses',
-    author: 'Admin',
-    category: 'Publikasi',
-    tags: ['media', 'publik', 'sharing'],
-    excerpt: 'Media yang ditampilkan dengan jelas akan memperkuat cerita dan membuat artikel terasa lebih kredibel di mata pengunjung.',
-    content: 'Keterbacaan bukan hanya soal teks. Gambar, video, dan kebutuhan audio juga ikut membentuk pemahaman. Kualitas penyajian media publik yang rapi membuat setiap artikel terasa lebih utuh.\n\nSemua pengunjung bisa mengikuti alur cerita dengan lebih santai, tanpa hambatan teknis.',
-    createdAt: '2026-09-20T15:45:00.000Z',
-    cover: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
-    media: [
-      { id: 'm-seed-3', type: 'image/jpeg', url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80', name: 'public-media.jpg' }
-    ]
-  }
+const defaults = [
+  { id: 'seed-1', title: 'Membangun ritme tulisan yang lebih manusiawi dengan AI', author: 'Kang Brave', category: 'Produktivitas', tags: ['ai', 'writing', 'produk'], excerpt: 'AI mempercepat proses berpikir tanpa menggantikan suara manusia.', content: 'AI dapat membantu membuat kerangka, memperjelas pesan, dan mengecek tone. Namun, suara manusia tetap menjadi inti cerita.\n\nGunakan teknologi untuk memberi ruang bagi ide yang lebih dalam.', createdAt: '2026-09-12T08:00:00.000Z', cover: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80', media: [{ id: 'media-1', name: 'writing-process.jpg', type: 'image/jpeg', url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80' }] },
+  { id: 'seed-2', title: 'Desain blog modern yang terasa hidup di setiap layar', author: 'Brave Studio', category: 'Design', tags: ['ui', 'blog', 'design'], excerpt: 'Responsif adalah cara menjaga pengalaman membaca tetap nyaman.', content: 'Sistem tipografi, ruang, kontras, dan ritme visual membuat artikel terasa lebih nyaman dibaca di perangkat apa pun.', createdAt: '2026-09-18T10:30:00.000Z', cover: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80', media: [{ id: 'media-2', name: 'design-layout.jpg', type: 'image/jpeg', url: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80' }] },
+  { id: 'seed-3', title: 'Kenapa media publik perlu tampil rapi dan mudah diakses', author: 'Admin', category: 'Publikasi', tags: ['media', 'publik', 'sharing'], excerpt: 'Media yang jelas memperkuat cerita dan kredibilitas artikel.', content: 'Gambar, video, dan audio ikut membentuk pemahaman. Penyajian media publik yang rapi membuat setiap artikel terasa lebih utuh.', createdAt: '2026-09-20T15:45:00.000Z', cover: fallbackCover, media: [{ id: 'media-3', name: 'public-media.jpg', type: 'image/jpeg', url: fallbackCover }] }
 ];
 
-const state = {
-  posts: loadPosts(),
-  mediaDraft: [],
-  editingId: null
-};
+const $ = (id) => document.getElementById(id);
+const els = { posts: $('postList'), media: $('mediaList'), featured: $('featuredRow'), adminList: $('adminPostList'), form: $('postForm'), search: $('searchInput'), upload: $('mediaInput'), preview: $('mediaPreview'), admin: $('admin'), modal: $('articleModal'), modalBody: $('modalBody'), toast: $('toast'), title: $('titleInput'), author: $('authorInput'), category: $('categoryInput'), tags: $('tagsInput'), excerpt: $('excerptInput'), content: $('contentInput') };
+const state = { posts: load(), draftMedia: [], editing: null };
 
-const elements = {
-  postCountStat: document.getElementById('postCountStat'),
-  mediaCountStat: document.getElementById('mediaCountStat'),
-  postList: document.getElementById('postList'),
-  mediaList: document.getElementById('mediaList'),
-  featuredRow: document.getElementById('featuredRow'),
-  searchInput: document.getElementById('searchInput'),
-  postForm: document.getElementById('postForm'),
-  mediaInput: document.getElementById('mediaInput'),
-  mediaPreview: document.getElementById('mediaPreview'),
-  toast: document.getElementById('toast'),
-  adminPanel: document.getElementById('admin'),
-  adminPostList: document.getElementById('adminPostList'),
-  titleInput: document.getElementById('titleInput'),
-  authorInput: document.getElementById('authorInput'),
-  categoryInput: document.getElementById('categoryInput'),
-  tagsInput: document.getElementById('tagsInput'),
-  excerptInput: document.getElementById('excerptInput'),
-  contentInput: document.getElementById('contentInput'),
-  articleModal: document.getElementById('articleModal'),
-  modalBody: document.getElementById('modalBody')
-};
-
-function loadPosts() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [...defaultPosts];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length ? parsed : [...defaultPosts];
-  } catch (error) {
-    return [...defaultPosts];
-  }
-}
-
-function savePosts() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.posts));
-}
-
-function showToast(message) {
-  elements.toast.textContent = message;
-  elements.toast.classList.add('show');
-  window.clearTimeout(showToast.timeoutId);
-  showToast.timeoutId = window.setTimeout(() => {
-    elements.toast.classList.remove('show');
-  }, 2200);
-}
-
-function formatDate(value) {
-  return new Date(value).toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  });
-}
-
-function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }[char]));
-}
-
-function buildTags(tags) {
-  if (!Array.isArray(tags) || !tags.length) return ['blog'];
-  return tags.slice(0, 3);
-}
-
-function getMediaSummary(post) {
-  return Array.isArray(post.media) ? post.media : [];
-}
-
-function getCover(post) {
-  if (post.cover) return post.cover;
-  const media = getMediaSummary(post);
-  if (media.length) return media[0].url;
-  return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80';
-}
+function load() { try { const value = JSON.parse(localStorage.getItem(STORAGE_KEY)); return Array.isArray(value) && value.length ? value : [...defaults]; } catch { return [...defaults]; } }
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.posts)); }
+function escape(value) { return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c])); }
+function date(value) { return new Date(value).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }); }
+function tags(post) { return Array.isArray(post.tags) && post.tags.length ? post.tags.slice(0, 4) : ['blog']; }
+function media(post) { return Array.isArray(post.media) ? post.media : []; }
+function cover(post) { return post.cover || media(post)[0]?.url || fallbackCover; }
+function toast(message) { els.toast.textContent = message; els.toast.classList.add('show'); clearTimeout(toast.timer); toast.timer = setTimeout(() => els.toast.classList.remove('show'), 2300); }
 
 function renderFeatured() {
-  const featured = state.posts.slice(0, 3);
-  elements.featuredRow.innerHTML = featured.map((post) => `
-    <article class="feature-card">
-      <div class="kicker">${escapeHtml(post.category || 'Blog')}</div>
-      <h3>${escapeHtml(post.title)}</h3>
-      <p>${escapeHtml(post.excerpt || post.content.slice(0, 110))}</p>
-    </article>
-  `).join('');
+  els.featured.innerHTML = state.posts.slice(0, 3).map((post) => `<article class="feature-card"><div class="kicker">${escape(post.category || 'Blog')}</div><h3>${escape(post.title)}</h3><p>${escape(post.excerpt || post.content.slice(0, 130))}</p></article>`).join('');
 }
 
 function renderPosts() {
-  const query = elements.searchInput.value.trim().toLowerCase();
-  const visiblePosts = state.posts.filter((post) => {
-    const text = `${post.title} ${post.author} ${post.category} ${(post.tags || []).join(' ')} ${post.content}`.toLowerCase();
-    return text.includes(query);
-  });
-
-  elements.postList.innerHTML = visiblePosts.length
-    ? visiblePosts.map((post) => {
-        const media = getMediaSummary(post);
-        const firstMedia = media[0];
-        const preview = firstMedia && firstMedia.type.startsWith('video/')
-          ? `<video src="${firstMedia.url}" controls playsinline></video>`
-          : `<img src="${getCover(post)}" alt="${escapeHtml(post.title)}" loading="lazy" />`;
-
-        return `
-          <article class="post-card">
-            <div class="post-cover">${preview}</div>
-            <div class="post-body">
-              <div class="post-meta">
-                <span>${escapeHtml(post.category || 'General')}</span>
-                <span>${formatDate(post.createdAt)}</span>
-              </div>
-
-              <div class="tag-list">
-                ${buildTags(post.tags).map((tag) => `<span class="tag-pill">#${escapeHtml(tag)}</span>`).join('')}
-              </div>
-
-              <h3>${escapeHtml(post.title)}</h3>
-              <p>${escapeHtml(post.excerpt || post.content.slice(0, 140))}</p>
-
-              <div class="post-footer">
-                <span class="author-pill">${escapeHtml(post.author || 'Admin')}</span>
-                <button class="row-action" type="button" data-action="open" data-id="${post.id}">Baca</button>
-              </div>
-            </div>
-          </article>
-        `;
-      }).join('')
-    : '<div class="empty-state">Belum ada artikel yang cocok dengan pencarian Anda.</div>';
-
-  elements.postCountStat.textContent = String(state.posts.length);
+  const query = (els.search.value || '').trim().toLowerCase();
+  const posts = state.posts.filter((post) => `${post.title} ${post.author} ${post.category} ${(post.tags || []).join(' ')} ${post.content}`.toLowerCase().includes(query));
+  els.posts.innerHTML = posts.length ? posts.map((post) => {
+    const first = media(post)[0];
+    const visual = first?.type?.startsWith('video/') ? `<video src="${escape(first.url)}" controls playsinline></video>` : `<img src="${escape(cover(post))}" alt="${escape(post.title)}" loading="lazy">`;
+    return `<article class="post-card"><div class="post-cover">${visual}</div><div class="post-body"><div class="post-meta"><span>${escape(post.category || 'Umum')}</span><span>${date(post.createdAt)}</span></div><div class="tag-list">${tags(post).map((tag) => `<span class="tag-pill">#${escape(tag)}</span>`).join('')}</div><h3>${escape(post.title)}</h3><p>${escape(post.excerpt || post.content.slice(0, 150))}</p><div class="post-footer"><span class="author-pill">${escape(post.author || 'Admin')}</span><button class="row-action" data-action="open" data-id="${escape(post.id)}" type="button">Baca</button></div></div></article>`;
+  }).join('') : '<div class="empty-state">Belum ada artikel yang cocok dengan pencarian Anda.</div>';
+  $('postCountStat').textContent = state.posts.length;
 }
 
 function renderMedia() {
-  const allMedia = state.posts.flatMap((post) => getMediaSummary(post).map((media) => ({ ...media, postTitle: post.title, postAuthor: post.author })));
-  const visibleMedia = allMedia.slice(0, 6);
-
-  elements.mediaList.innerHTML = visibleMedia.length
-    ? visibleMedia.map((item) => {
-        const isVideo = item.type && item.type.startsWith('video/');
-        const preview = isVideo ? `<video src="${item.url}" controls playsinline></video>` : `<img src="${item.url}" alt="${escapeHtml(item.postTitle)}" loading="lazy" />`;
-        return `
-          <div class="media-item">
-            <div class="media-item-thumb">${preview}</div>
-            <div>
-              <strong>${escapeHtml(item.postTitle || 'Media publik')}</strong>
-              <span>${escapeHtml(item.postAuthor || 'Admin')}</span>
-            </div>
-          </div>
-        `;
-      }).join('')
-    : '<div class="empty-state">Belum ada media yang dipublikasikan.</div>';
-
-  elements.mediaCountStat.textContent = String(allMedia.length);
+  const all = state.posts.flatMap((post) => media(post).map((item) => ({ ...item, title: post.title, author: post.author })));
+  els.media.innerHTML = all.slice(0, 8).map((item) => { const visual = item.type?.startsWith('video/') ? `<video src="${escape(item.url)}" controls playsinline></video>` : `<img src="${escape(item.url)}" alt="${escape(item.title)}" loading="lazy">`; return `<div class="media-item"><div class="media-item-thumb">${visual}</div><div><strong>${escape(item.title)}</strong><span>${escape(item.author || 'Admin')}</span></div></div>`; }).join('') || '<div class="empty-state">Belum ada media.</div>';
+  $('mediaCountStat').textContent = all.length;
 }
 
-function renderDraftPreview() {
-  if (!state.mediaDraft.length) {
-    elements.mediaPreview.innerHTML = '';
-    return;
-  }
-
-  elements.mediaPreview.innerHTML = state.mediaDraft.map((item) => {
-    const kind = item.type.startsWith('video/') ? 'VIDEO' : item.type.startsWith('audio/') ? 'AUDIO' : 'IMAGE';
-    const preview = item.type.startsWith('video/')
-      ? `<video src="${item.url}" controls playsinline></video>`
-      : item.type.startsWith('audio/')
-        ? `<audio src="${item.url}" controls></audio>`
-        : `<img src="${item.url}" alt="${escapeHtml(item.name)}" />`;
-
-    return `
-      <div class="preview-item">
-        <div class="preview-chip">${kind}</div>
-        ${preview}
-      </div>
-    `;
-  }).join('');
+function renderAdmin() {
+  els.adminList.innerHTML = state.posts.map((post) => `<div class="admin-row"><div><strong>${escape(post.title)}</strong><small>${date(post.createdAt)}</small></div><div class="row-actions"><button class="row-action" data-action="edit" data-id="${escape(post.id)}" type="button">Edit</button><button class="row-action delete" data-action="delete" data-id="${escape(post.id)}" type="button">Delete</button></div></div>`).join('');
 }
+function renderAll() { renderFeatured(); renderPosts(); renderMedia(); renderAdmin(); }
 
-function renderAdminList() {
-  elements.adminPostList.innerHTML = state.posts.map((post) => `
-    <div class="admin-row">
-      <div>
-        <strong>${escapeHtml(post.title)}</strong>
-        <small>${formatDate(post.createdAt)}</small>
-      </div>
-      <div class="row-actions">
-        <button class="row-action" type="button" data-action="edit" data-id="${post.id}">Edit</button>
-        <button class="row-action delete" type="button" data-action="delete" data-id="${post.id}">Delete</button>
-      </div>
-    </div>
-  `).join('');
+function preview() {
+  els.preview.innerHTML = state.draftMedia.map((item) => { const visual = item.type.startsWith('video/') ? `<video src="${item.url}" controls playsinline></video>` : item.type.startsWith('audio/') ? `<audio src="${item.url}" controls></audio>` : `<img src="${item.url}" alt="${escape(item.name)}">`; return `<div class="preview-item"><span class="preview-chip">${escape(item.type.split('/')[0].toUpperCase())}</span>${visual}</div>`; }).join('');
 }
+function read(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(file); }); }
+async function selectMedia(event) { for (const file of Array.from(event.target.files || [])) { if (!/^(image|video|audio)\//.test(file.type)) { toast('Gunakan file gambar, video, atau audio.'); continue; } if (file.size > 25 * 1024 * 1024) { toast(`${file.name} terlalu besar. Maksimal 25 MB.`); continue; } state.draftMedia.push({ id: crypto.randomUUID(), name: file.name, type: file.type, url: await read(file) }); } event.target.value = ''; preview(); }
+function reset() { state.editing = null; state.draftMedia = []; els.form.reset(); els.author.value = 'Admin'; preview(); }
+function openAdmin(open = true) { els.admin.classList.toggle('hidden', !open); if (open) els.admin.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function edit(id) { const post = state.posts.find((item) => item.id === id); if (!post) return; state.editing = id; els.title.value = post.title; els.author.value = post.author || 'Admin'; els.category.value = post.category || ''; els.tags.value = (post.tags || []).join(', '); els.excerpt.value = post.excerpt || ''; els.content.value = post.content || ''; state.draftMedia = media(post).map((item) => ({ ...item })); preview(); openAdmin(); }
+function openArticle(id) { const post = state.posts.find((item) => item.id === id); if (!post) return; const first = media(post).find((item) => /^(image|video)\//.test(item.type)); const hero = first?.type.startsWith('video/') ? `<video src="${first.url}" controls playsinline></video>` : first ? `<img src="${first.url}" alt="${escape(post.title)}">` : ''; els.modalBody.innerHTML = `<div class="modal-header"><p class="eyebrow">Story / Publication</p><h2 id="modalTitle">${escape(post.title)}</h2><div class="modal-meta">${escape(post.author || 'Admin')} · ${date(post.createdAt)} · ${escape(post.category || 'Umum')}</div></div><div class="modal-body">${hero}<div class="tag-list">${tags(post).map((tag) => `<span class="tag-pill">#${escape(tag)}</span>`).join('')}</div><div class="modal-copy">${escape(post.content).replace(/\n/g, '<br>')}</div>${media(post).length ? `<div class="modal-attachments">${media(post).map((item) => `<a class="modal-attachment" href="${item.url}" target="_blank" rel="noopener"><span>${item.type.split('/')[0][0].toUpperCase()}</span><div><strong>${escape(item.name || 'Media')}</strong><small>${escape(item.type)}</small></div></a>`).join('')}</div>` : ''}</div>`; els.modal.classList.remove('hidden'); els.modal.setAttribute('aria-hidden', 'false'); }
+function closeArticle() { els.modal.classList.add('hidden'); els.modal.setAttribute('aria-hidden', 'true'); }
 
-function readFileAsDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error('Gagal membaca file'));
-    reader.readAsDataURL(file);
-  });
-}
-
-async function handleMediaSelected(event) {
-  const files = Array.from(event.target.files || []);
-  if (!files.length) return;
-
-  const nextMedia = [];
-
-  for (const file of files) {
-    if (!file.type.startsWith('image/') && !file.type.startsWith('video/') && !file.type.startsWith('audio/')) {
-      showToast('Format media tidak didukung. Gunakan gambar, video, atau audio.');
-      continue;
-    }
-
-    const base64 = await readFileAsDataUrl(file);
-    nextMedia.push({ id: crypto.randomUUID(), name: file.name, type: file.type, url: base64 });
-  }
-
-  state.mediaDraft = [...state.mediaDraft, ...nextMedia];
-  renderDraftPreview();
-  event.target.value = '';
-}
-
-function resetDraft() {
-  state.mediaDraft = [];
-  state.editingId = null;
-  elements.postForm.reset();
-  elements.authorInput.value = 'Admin';
-  renderDraftPreview();
-}
-
-function populateForm(post) {
-  state.editingId = post.id;
-  elements.titleInput.value = post.title || '';
-  elements.authorInput.value = post.author || 'Admin';
-  elements.categoryInput.value = post.category || '';
-  elements.tagsInput.value = (post.tags || []).join(', ');
-  elements.excerptInput.value = post.excerpt || '';
-  elements.contentInput.value = post.content || '';
-  state.mediaDraft = Array.isArray(post.media) ? post.media.map((item) => ({ ...item })) : [];
-  renderDraftPreview();
-  toggleAdminPanel(true);
-}
-
-function openArticle(postId) {
-  const post = state.posts.find((item) => item.id === postId);
-  if (!post) return;
-
-  const media = getMediaSummary(post);
-  const mainMedia = media.find((item) => item.type.startsWith('image/') || item.type.startsWith('video/'));
-  const preview = mainMedia && mainMedia.type.startsWith('video/')
-    ? `<video src="${mainMedia.url}" controls playsinline></video>`
-    : mainMedia
-      ? `<img src="${mainMedia.url}" alt="${escapeHtml(post.title)}" />`
-      : '';
-
-  const attachments = media.length
-    ? media.map((item) => `
-        <a class="modal-attachment" href="${item.url}" target="_blank" rel="noopener noreferrer">
-          <span>${item.type.startsWith('video/') ? 'V' : item.type.startsWith('audio/') ? 'A' : 'I'}</span>
-          <div>
-            <strong>${escapeHtml(item.name || 'Media publik')}</strong>
-            <small>${escapeHtml(item.type || 'file')}</small>
-          </div>
-        </a>
-      `).join('')
-    : '';
-
-  elements.modalBody.innerHTML = `
-    <div class="modal-header">
-      <p class="eyebrow">Story / Publication</p>
-      <h2 id="modalTitle">${escapeHtml(post.title)}</h2>
-      <div class="modal-meta">${escapeHtml(post.author || 'Admin')} · ${formatDate(post.createdAt)} · ${escapeHtml(post.category || 'Umum')}</div>
-    </div>
-    <div class="modal-body">
-      ${preview ? preview : ''}
-      <div class="tag-list">
-        ${buildTags(post.tags).map((tag) => `<span class="tag-pill">#${escapeHtml(tag)}</span>`).join('')}
-      </div>
-      <div class="modal-copy">${escapeHtml(post.content || '').replace(/\n/g, '<br>')}</div>
-      ${attachments ? `<div class="modal-attachments">${attachments}</div>` : ''}
-    </div>
-  `;
-
-  elements.articleModal.classList.remove('hidden');
-  elements.articleModal.setAttribute('aria-hidden', 'false');
-}
-
-function closeArticle() {
-  elements.articleModal.classList.add('hidden');
-  elements.articleModal.setAttribute('aria-hidden', 'true');
-}
-
-function handleActionClick(event) {
-  const button = event.target.closest('[data-action]');
-  if (!button) return;
-
-  const { action, id } = button.dataset;
-
-  if (action === 'open') {
-    openArticle(id);
-    return;
-  }
-
-  if (action === 'edit') {
-    const post = state.posts.find((item) => item.id === id);
-    if (post) populateForm(post);
-    return;
-  }
-
-  if (action === 'delete') {
-    const post = state.posts.find((item) => item.id === id);
-    if (!post) return;
-    const confirmed = window.confirm(`Hapus "${post.title}"?`);
-    if (!confirmed) return;
-
-    state.posts = state.posts.filter((item) => item.id !== id);
-    savePosts();
-    renderAll();
-    showToast('Artikel berhasil dihapus.');
-  }
-}
-
-function renderAll() {
-  renderFeatured();
-  renderPosts();
-  renderMedia();
-  renderAdminList();
-}
-
-function publishPost(event) {
-  event.preventDefault();
-
-  const title = elements.titleInput.value.trim();
-  const author = elements.authorInput.value.trim() || 'Admin';
-  const category = elements.categoryInput.value.trim() || 'Umum';
-  const tags = (elements.tagsInput.value || '')
-    .split(',')
-    .map((tag) => tag.trim())
-    .filter(Boolean);
-  const excerpt = elements.excerptInput.value.trim();
-  const content = elements.contentInput.value.trim();
-
-  if (!title || !content) {
-    showToast('Judul dan konten artikel wajib diisi.');
-    return;
-  }
-
-  const coverMedia = state.mediaDraft.find((item) => item.type.startsWith('image/')) || state.mediaDraft[0];
-
-  const payload = {
-    id: state.editingId || crypto.randomUUID(),
-    title,
-    author,
-    category,
-    tags: tags.length ? tags : ['blog'],
-    excerpt: excerpt || content.slice(0, 140),
-    content,
-    createdAt: state.editingId ? (state.posts.find((p) => p.id === state.editingId)?.createdAt || new Date().toISOString()) : new Date().toISOString(),
-    cover: coverMedia ? coverMedia.url : getCover(defaultPosts[0]),
-    media: state.mediaDraft.length ? state.mediaDraft : []
-  };
-
-  if (state.editingId) {
-    state.posts = state.posts.map((post) => (post.id === state.editingId ? payload : post));
-    showToast('Artikel berhasil diperbarui.');
-  } else {
-    state.posts = [payload, ...state.posts];
-    showToast('Artikel berhasil dipublikasikan.');
-  }
-
-  savePosts();
-  renderAll();
-  resetDraft();
-  elements.adminPanel.classList.add('hidden');
-}
-
-function toggleAdminPanel(forceOpen) {
-  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : elements.adminPanel.classList.contains('hidden');
-  elements.adminPanel.classList.toggle('hidden', !shouldOpen);
-}
-
-function animateTheme() {
-  let hue = 222;
-  const root = document.documentElement;
-
-  setInterval(() => {
-    hue = (hue + 1.2) % 360;
-    root.style.setProperty('--hue', String(hue));
-  }, 2800);
-}
-
-function init() {
-  renderAll();
-  resetDraft();
-
-  elements.searchInput.addEventListener('input', renderPosts);
-  elements.mediaInput.addEventListener('change', handleMediaSelected);
-  elements.postForm.addEventListener('submit', publishPost);
-  document.getElementById('openAdminBtn').addEventListener('click', () => toggleAdminPanel());
-  document.getElementById('openAdminSecondary').addEventListener('click', () => toggleAdminPanel());
-  document.getElementById('closeAdminBtn').addEventListener('click', () => toggleAdminPanel(false));
-  document.getElementById('resetFormBtn').addEventListener('click', resetDraft);
-  document.getElementById('closeModalBtn').addEventListener('click', closeArticle);
-  document.querySelector('.modal-backdrop').addEventListener('click', (event) => {
-    if (event.target.dataset.close === 'true') closeArticle();
-  });
-  document.body.addEventListener('click', handleActionClick);
-
-  document.getElementById('themeToggle').addEventListener('click', () => {
-    const root = document.documentElement;
-    const current = Number(root.style.getPropertyValue('--hue') || 222);
-    root.style.setProperty('--hue', String((current + 60) % 360));
-    showToast('Tema AI diperbarui.');
-  });
-
-  animateTheme();
-  showToast('Blog siap digunakan.');
-}
-
-window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && !elements.articleModal.classList.contains('hidden')) {
-    closeArticle();
-  }
-  if (event.key === 'Escape' && !elements.adminPanel.classList.contains('hidden')) {
-    toggleAdminPanel(false);
-  }
-});
-
-window.addEventListener('storage', () => {
-  state.posts = loadPosts();
-  renderAll();
-});
-
-init();
-
+els.form.addEventListener('submit', (event) => { event.preventDefault(); const title = els.title.value.trim(); const content = els.content.value.trim(); if (!title || !content) return toast('Judul dan konten wajib diisi.'); const chosen = state.draftMedia.find((item) => item.type.startsWith('image/')) || state.draftMedia[0]; const post = { id: state.editing || crypto.randomUUID(), title, content, author: els.author.value.trim() || 'Admin', category: els.category.value.trim() || 'Umum', tags: els.tags.value.split(',').map((x) => x.trim()).filter(Boolean), excerpt: els.excerpt.value.trim() || content.slice(0, 140), createdAt: state.editing ? state.posts.find((x) => x.id === state.editing)?.createdAt || new Date().toISOString() : new Date().toISOString(), cover: chosen?.url || fallbackCover, media: state.draftMedia }; state.posts = state.editing ? state.posts.map((x) => x.id === state.editing ? post : x) : [post, ...state.posts]; save(); renderAll(); reset(); openAdmin(false); toast('Artikel berhasil disimpan dan tampil publik.'); });
+els.upload.addEventListener('change', selectMedia);
+$('resetFormBtn').addEventListener('click', reset);
+$('openAdminBtn').addEventListener('click', () => openAdmin()); $('openAdminSecondary').addEventListener('click', () => openAdmin()); $('closeAdminBtn').addEventListener('click', () => openAdmin(false));
+els.search.addEventListener('input', renderPosts);
+document.body.addEventListener('click', (event) => { const button = event.target.closest('[data-action]'); if (!button) return; const { action, id } = button.dataset; if (action === 'open') return openArticle(id); if (action === 'edit') return edit(id); if (action === 'delete') { const post = state.posts.find((x) => x.id === id); if (post && confirm(`Hapus "${post.title}"?`)) { state.posts = state.posts.filter((x) => x.id !== id); save(); renderAll(); toast('Artikel dihapus.'); } } });
+$('closeModalBtn').addEventListener('click', closeArticle); document.querySelector('.modal-backdrop').addEventListener('click', closeArticle);
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeArticle(); openAdmin(false); } });
+$('themeToggle').addEventListener('click', () => { const root = document.documentElement; root.style.setProperty('--hue', String((Number(root.style.getPropertyValue('--hue') || 222) + 60) % 360)); toast('Tema AI diperbarui.'); });
+let hue = 222; setInterval(() => { hue = (hue + 1.2) % 360; document.documentElement.style.setProperty('--hue', hue); }, 2800);
+window.addEventListener('storage', () => { state.posts = load(); renderAll(); });
+reset(); renderAll();
