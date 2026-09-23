@@ -1,53 +1,192 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#090b18" />
-  <meta name="description" content="Kang Brave — penyimpanan file lokal yang cepat, privat, dan modern." />
-  <title>Kang Brave — Local File Space</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="aurora aurora-one"></div>
-  <div class="aurora aurora-two"></div>
-  <main class="shell">
-    <nav class="nav">
-      <a class="brand" href="./" aria-label="Kang Brave home">
-        <span class="brand-mark"><span></span><span></span><span></span></span>
-        <span>Kang<span class="brand-muted">Brave</span></span>
-      </a>
-      <div class="privacy-pill"><span class="pulse"></span> 100% lokal & privat</div>
-    </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Brave Blog — blog publik dengan artikel, media, dan admin panel modern." />
+    <title>Brave Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="noise"></div>
 
-    <section class="hero">
-      <div class="eyebrow"><span class="spark">✦</span> YOUR PERSONAL FILE SPACE</div>
-      <h1>Simpan file.<br /><em>Secara sederhana.</em></h1>
-      <p class="hero-copy">Drop file kamu ke ruang lokal yang cepat, rapi, dan tetap privat.<br class="desktop-only" /> Tidak ada upload ke server—semua tersimpan di browser ini.</p>
-    </section>
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-mark">B</div>
+        <div class="brand-copy">
+          <span class="brand-name">Brave</span>
+          <span class="brand-sub">Blog</span>
+        </div>
+      </div>
 
-    <section class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Pilih atau letakkan file di sini">
-      <input id="fileInput" type="file" multiple hidden />
-      <div class="drop-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" /></svg></div>
-      <h2>Taruh file di sini</h2>
-      <p>atau <button class="browse-button" id="browseButton" type="button">pilih dari perangkat</button></p>
-      <span class="drop-hint">Mendukung semua tipe file · Maks. 500 MB per file</span>
-    </section>
+      <nav class="main-nav" aria-label="Navigasi utama">
+        <a href="#home">Beranda</a>
+        <a href="#posts">Artikel</a>
+        <a href="#media">Media</a>
+        <a href="#admin">Admin</a>
+      </nav>
 
-    <section class="toolbar" aria-label="Kontrol file">
-      <div class="section-title"><span class="title-dot"></span><span>FILE KAMU</span><strong id="fileCount">0</strong></div>
-      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg><input id="searchInput" type="search" placeholder="Cari file..." aria-label="Cari file" /></label>
-    </section>
+      <div class="topbar-actions">
+        <button id="themeToggle" class="theme-button" type="button" aria-label="Ubah tema otomatis">
+          <span class="theme-dot"></span>
+          AI Theme
+        </button>
+        <button id="openAdminBtn" class="admin-button" type="button">Menu Admin</button>
+      </div>
+    </header>
 
-    <section class="file-list" id="fileList" aria-live="polite"></section>
-    <div class="empty-state" id="emptyState"><div class="empty-orbit">✦</div><h3>Ruang masih kosong</h3><p>File yang kamu tambahkan akan muncul di sini.</p></div>
+    <main class="page-shell">
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow">Publik, modern, dan otomatis</p>
+          <h1>Blog yang hidup dengan sentuhan AI dan gaya visual yang selalu berubah.</h1>
+          <p class="lead">
+            Bagikan artikel, foto, video, dan file penting ke semua pengunjung dengan tampilan editorial yang bold,
+            luwes, dan terasa seperti produk masa kini.
+          </p>
 
-    <footer><span>AEDKACRUT <b>·</b> LOCAL STORAGE</span><span id="storageText">0 B digunakan</span></footer>
-  </main>
-  <div class="toast" id="toast" role="status"></div>
-  <script src="app.js"></script>
-</body>
+          <div class="hero-actions">
+            <a href="#posts" class="primary-button">Lihat artikel</a>
+            <button id="openAdminSecondary" class="secondary-button" type="button">Kelola admin</button>
+          </div>
+
+          <div class="stats-bar" aria-label="Statistik blog">
+            <div>
+              <strong id="postCountStat">0</strong>
+              <span>Artikel</span>
+            </div>
+            <div>
+              <strong id="mediaCountStat">0</strong>
+              <span>Media</span>
+            </div>
+            <div>
+              <strong>24/7</strong>
+              <span>Publik</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Preview layout blog">
+          <div class="card-window">
+            <div class="window-bar">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="window-content">
+              <div class="mini-feature feature-top"></div>
+              <div class="mini-grid">
+                <div class="mini-card"></div>
+                <div class="mini-card accent"></div>
+                <div class="mini-card tall"></div>
+                <div class="mini-card"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="featured-row" id="featuredRow" aria-label="Highlight artikel"></section>
+
+      <section class="content-grid" id="posts">
+        <div class="main-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Publik</p>
+              <h2>Artikel terbaru</h2>
+            </div>
+            <label class="search-box" aria-label="Cari artikel">
+              <span>⌕</span>
+              <input id="searchInput" type="search" placeholder="Cari judul, tag, atau penulis" />
+            </label>
+          </div>
+
+          <div id="postList" class="post-grid" aria-live="polite"></div>
+        </div>
+
+        <aside class="sidebar-panel" id="media">
+          <div class="side-card">
+            <div class="section-head compact">
+              <div>
+                <p class="eyebrow">Media</p>
+                <h3>Gallery publik</h3>
+              </div>
+            </div>
+            <div id="mediaList" class="media-grid"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="admin" class="admin-panel hidden" aria-live="polite">
+        <div class="admin-header">
+          <div>
+            <p class="eyebrow">Area admin</p>
+            <h2>Kelola konten</h2>
+          </div>
+          <button id="closeAdminBtn" class="close-button" type="button" aria-label="Tutup admin">×</button>
+        </div>
+
+        <form id="postForm" class="admin-form">
+          <div class="field-row two-col">
+            <label>
+              Judul artikel
+              <input id="titleInput" name="title" type="text" maxlength="120" placeholder="Judul yang ingin diposting" required />
+            </label>
+            <label>
+              Penulis
+              <input id="authorInput" name="author" type="text" maxlength="60" placeholder="Nama penulis" value="Admin" />
+            </label>
+          </div>
+
+          <div class="field-row two-col">
+            <label>
+              Kategori
+              <input id="categoryInput" name="category" type="text" maxlength="40" placeholder="Teknologi, Design, Tips, dll" />
+            </label>
+            <label>
+              Tag
+              <input id="tagsInput" name="tags" type="text" maxlength="100" placeholder="ai, blog, media" />
+            </label>
+          </div>
+
+          <label>
+            Ringkasan
+            <textarea id="excerptInput" name="excerpt" rows="2" maxlength="220" placeholder="Tulis ringkasan singkat artikel"></textarea>
+          </label>
+
+          <label>
+            Konten artikel
+            <textarea id="contentInput" name="content" rows="6" maxlength="5000" placeholder="Tulis isi artikel..." required></textarea>
+          </label>
+
+          <div class="upload-box">
+            <div class="upload-copy">
+              <strong>Tambahkan media publik</strong>
+              <small>Pilih gambar, video, atau audio yang bisa dilihat semua pengunjung.</small>
+            </div>
+            <label class="upload-button">
+              <input id="mediaInput" type="file" accept="image/*,video/*,audio/*" multiple />
+              Pilih file
+            </label>
+          </div>
+
+          <div id="mediaPreview" class="media-preview" aria-live="polite"></div>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-button small">Publikasikan</button>
+            <button type="button" id="resetFormBtn" class="secondary-button small ghost">Reset</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
 </html>
